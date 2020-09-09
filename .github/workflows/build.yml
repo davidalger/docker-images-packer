@@ -14,7 +14,7 @@ jobs:
             EXTRA_ARGS: "--latest"
     steps:
     - uses: actions/checkout@v1
-    - run: ./scripts/build.sh --push ${EXTRA_ARGS:-}
+    - run: ./scripts/build.sh --push ${{ matrix.EXTRA_ARGS }}
       env:
         PACKER_VERSION: ${{ matrix.PACKER_VERSION }}
         PACKER_VERSION_SHA256SUM: ${{ matrix.PACKER_VERSION_SHA256SUM }}
