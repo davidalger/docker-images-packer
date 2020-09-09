@@ -1,0 +1,22 @@
+name: Docker Image CI
+on: [push]
+jobs:
+  build:
+    name: Packer ${{ matrix.version_list }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        MAJOR_VERSION: ["1.6"]
+        include:
+          - MAJOR_VERSION: "1.6"
+            PACKER_VERSION: "1.6.2"
+            PACKER_VERSION_SHA256SUM: 089fc9885263bb283f20e3e7917f85bb109d9335f24d59c81e6f3a0d4a96a608
+            EXTRA_ARGS: "--latest"
+    steps:
+    - uses: actions/checkout@v1
+    - run: ./scripts/build.sh --push ${EXTRA_ARGS:-}
+      env:
+        PACKER_VERSION: ${{ matrix.PACKER_VERSION }}
+        PACKER_VERSION_SHA256SUM: ${{ matrix.PACKER_VERSION_SHA256SUM }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
