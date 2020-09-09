@@ -14,11 +14,6 @@ RUN echo "${PACKER_VERSION_SHA256SUM} packer_${PACKER_VERSION}_linux_amd64.zip" 
 
 RUN unzip packer_${PACKER_VERSION}_linux_amd64.zip
 
-FROM centos:8
-RUN dnf install -y epel-release \
-    && dnf install -y openssh-clients ansible \
-    && dnf clean all \
-    && rm -rf /var/cache/dnf
-
+FROM davidalger/ansible:2.9
 COPY --from=0 packer /usr/bin/packer
 ENTRYPOINT ["/usr/bin/packer"]
